@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  valle-segvial-front:
+    image: vallelabs/dpi-frontend:1.1.1-tumlab
+    container_name: valle-segvial-front
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    env_file:
+      - /tumlab/apps/envs/.env-segvial-front
+    ports:
+      - "3010:80"
+    networks:
+      - valle-segvial-net
+  valle-segvial-back:
+    image: vallelabs/dpi-api:1.0.3
+    container_name: valle-segvial-back
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    env_file:
+      - /tumlab/apps/envs/.env-segvial-back
+    ports:
+      - "4011:4000"
+    networks:
+      - valle-segvial-net
+  valle-segvial-game:
+    image: vallelabs/seguridad-vial-game:3.2.4-tumlab
+    container_name: valle-segvial-game
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    ports:
+      - "3012:80"
+    networks:
+      - valle-segvial-net
+networks:
+  valle-segvial-net:
+    driver: bridge
